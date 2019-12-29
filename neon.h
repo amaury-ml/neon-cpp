@@ -2,14 +2,12 @@
 
 namespace neon {
 
-template <typename TDST, typename TSRC, int SZSRC>
-typename neon_type<TDST, SZSRC*sizeof(TSRC)/sizeof(TDST)>::type cast( typename neon_type<TSRC, SZSRC>::type const& v);
-
 template <typename T, int SZ>
 typename SIMD<T,SZ>::type vabd(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
 
 template <typename T, int SZ>
-typename SIMD<T,SZ>::type vabs(typename SIMD<T,SZ>::type const& v0);
+typename std::enable_if<std::is_signed<T>::value,
+typename SIMD<T,SZ>::type>::type vabs(typename SIMD<T,SZ>::type const& v0);
 
 template <typename T, int SZ>
 typename SIMD<T,SZ>::type vadd(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
@@ -18,16 +16,20 @@ typename SIMD<T,SZ>::type vadd(typename SIMD<T,SZ>::type const& v0, typename SIM
 //typename SIMD<T,SZ>::type vbsl(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
 
 template <typename T, int SZ>
-typename SIMD<typename mask_type<T>::type,SZ>::type vcage(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
+typename std::enable_if<std::is_floating_point<T>::value,
+typename SIMD<typename mask_type<T>::type,SZ>::type>::type vcage(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
 
 template <typename T, int SZ>
-typename SIMD<typename mask_type<T>::type,SZ>::type vcagt(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
+typename std::enable_if<std::is_floating_point<T>::value,
+typename SIMD<typename mask_type<T>::type,SZ>::type>::type vcagt(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
 
 template <typename T, int SZ>
-typename SIMD<typename mask_type<T>::type,SZ>::type vcale(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
+typename std::enable_if<std::is_floating_point<T>::value,
+typename SIMD<typename mask_type<T>::type,SZ>::type>::type vcale(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
 
 template <typename T, int SZ>
-typename SIMD<typename mask_type<T>::type,SZ>::type vcalt(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
+typename std::enable_if<std::is_floating_point<T>::value,
+typename SIMD<typename mask_type<T>::type,SZ>::type>::type vcalt(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
 
 template <typename T, int SZ>
 typename SIMD<typename mask_type<T>::type,SZ>::type vceq(typename SIMD<T,SZ>::type const& v0, typename SIMD<T,SZ>::type const& v1);
