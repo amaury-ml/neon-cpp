@@ -1,8 +1,8 @@
-
 #pragma once
 #include <arm_neon.h>
 #include <cstddef>
 #include <type_traits>
+#include <array>
 
 namespace neon {
 template <typename T, int SZ>
@@ -81,6 +81,18 @@ struct neon_type<uint32_t, 4>
 };
 
 template <>
+struct neon_type<int64_t, 1>
+{
+    using type = int64x1_t;
+};
+
+template <>
+struct neon_type<int64_t, 2>
+{
+    using type = int64x2_t;
+};
+
+template <>
 struct neon_type<uint64_t, 1>
 {
     using type = uint64x1_t;
@@ -132,7 +144,13 @@ struct neon_type<double, 2>
 template <typename T, int SZ>
 struct SIMD {
     using type = typename neon_type<T, (SZ/8)/sizeof(T)>::type;
+    using base_type = T;
     static constexpr int size = (SZ/8)/sizeof(T);
+    static constexpr int vector_size = SZ;
+    type v_;
+    SIMD(const type v): v_(v) {}
+    operator type() const {return v_;}
+    operator type&()  {return v_;}
 };
 
 template <typename T> 
